@@ -5,6 +5,16 @@
   register: unzip
   ignore_errors: True
 
+- name: Check if {{ terraform_app }} {{ terraform_version }} already installed on Debian based systems
+  command: "{{ terraform_app }} --version"
+  register: t_version
+  ignore_errors: True
+
+- name: Extract version from output
+  set_fact:
+    terraform_local_version: "{{ t_version.stdout_lines[0] | regex_findall('.*v(.+[0-9])') | first }}"
+  when: t_version.rc != 2
+
 - name: Temporarily install unzip currently not in installed state on Debian based systems.
   apt:
     name: unzip
@@ -17,12 +27,14 @@
   get_url:
     url: "{{ terraform_dl_url }}/{{ terraform_app }}/{{ terraform_version }}/{{ terraform_app }}_{{ terraform_version }}_{{ terraform_osarch }}.zip"
     dest: "{{ terraform_dl_loc }}"
+  when: t_version.rc == 2 or terraform_local_version != terraform_version
 
 - name: "{{ terraform_app }}_unarchive on Debian based systems."
   unarchive:
     src: "{{ terraform_dl_loc }}/{{ terraform_app }}_{{ terraform_version }}_{{ terraform_osarch }}.zip"
     dest: "{{ terraform_bin_path }}"
     remote_src: true
+  when: t_version.rc == 2 or terraform_local_version != terraform_version
 
 - name: Uninstalling unzip as it was originally not in installed state on Debian based systems.
   apt:
@@ -36,3 +48,4 @@
   file:
     path: "{{ terraform_dl_loc }}/{{ terraform_app }}_{{ terraform_version }}_{{ terraform_osarch }}.zip"
     state: absent
+  when: t_version.rc == 2 or terraform_local_version != terraform_version
