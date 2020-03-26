@@ -5,7 +5,7 @@
   package_facts:
     manager: rpm
 
-- name: Check if {{ terraform_app }} {{ terraform_version }} already installed on Debian based systems
+- name: Check if {{ terraform_app }} {{ terraform_version }} already installed on Debian based systems  # noqa 301
   command: "{{ terraform_app }} --version"
   register: t_version
   ignore_errors: True
