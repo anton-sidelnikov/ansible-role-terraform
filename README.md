@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/anton-sidelnikov/ansible-role-terraform.svg?branch=master)](https://travis-ci.org/anton-sidelnikov/ansible-role-terraform)
+
 Inspired by: https://github.com/darkwizard242/ansible-role-terraform
 
 # Ansible Role: Terraform

@@ -1,14 +1,19 @@
 ---
 # tasks file for terraform
 
+- name: Install required package on Debian based systems.
+  apt:
+    name: python-apt
+    state: present
+
+- name: Gather package facts to verify if unzip is installed on Debian based systems
+  package_facts:
+    manager: apt
+
 - name: Downloading archive for {{ terraform_app }} {{ terraform_version }} temporarily to {{ terraform_dl_loc }} on Debian based systems
   get_url:
     url: "{{ terraform_dl_url }}/{{ terraform_app }}/{{ terraform_version }}/{{ terraform_app }}_{{ terraform_version }}_{{ terraform_osarch }}.zip"
     dest: "{{ terraform_dl_loc }}"
-
-- name: Get package info to verify if unzip is installed on Debian based systems
-  shell: apt show unzip # noqa E301 E303 E305
-  register: unzip
 
 - name: Temporarily install unzip currently not in installed state on Debian based systems.
   apt:
@@ -16,7 +21,7 @@
     state: present
     force_apt_get: yes
     update_cache: yes
-  when: unzip is not defined
+  when: packages['unzip'] is not defined
 
 - name: "{{ terraform_app }}_unarchive on Debian based systems."
   unarchive:
@@ -30,7 +35,7 @@
     state: absent
     force_apt_get: yes
     update_cache: yes
-  when: unzip is not defined
+  when: packages['unzip'] is not defined
 
 - name: "{{ terraform_app }}_archive_removal on Debian based systems."
   file:
