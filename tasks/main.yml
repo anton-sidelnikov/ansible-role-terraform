@@ -1,7 +1,7 @@
 ---
 # tasks file for terraform
 - name: Get latest terraform version if not set from github releases
-  command: curl https://github.com/hashicorp/terraform/releases/latest
+  command: curl https://github.com/hashicorp/terraform/releases/latest # noqa E301 E303 E305
   register: version
   when: terraform_version is undefined
 

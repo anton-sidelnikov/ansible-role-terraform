@@ -7,7 +7,7 @@
     dest: "{{ terraform_dl_loc }}"
 
 - name: Get package info to verify if unzip is installed on Debian based systems
-  shell: rpm -ql unzip
+  shell: rpm -ql unzip # noqa E301 E303 E305
   register: unzip
 
 - name: Temporarily install unzip on EL based systems if currently not in installed state on EL based systems.
