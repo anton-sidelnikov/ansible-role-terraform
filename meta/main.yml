@@ -1,0 +1,32 @@
+---
+galaxy_info:
+  role_name: terraform
+  author: Anton Sidelnikov
+  description: Role for installing 'terraform' for performing Infrastructure as Code (IaC).
+  company: none
+  license: MIT
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+        - buster
+    - name: EL
+      versions:
+        - 7
+        - 8
+
+  galaxy_tags:
+    - terraform
+    - system
+    - os
+    - cloud
+    - provisioning
+    - iac
+    - hashicorp

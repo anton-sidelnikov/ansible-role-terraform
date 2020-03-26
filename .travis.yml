@@ -1,0 +1,39 @@
+---
+os: linux
+dist: bionic
+
+language: python
+python:
+  - "3.7"
+
+services:
+  - docker
+
+env:
+  global:
+    - ROLE_NAME: terraform
+  jobs:
+    - DISTRO: centos-8
+    - DISTRO: centos-7
+    - DISTRO: ubuntu-18.04
+    - DISTRO: ubuntu-16.04
+    - DISTRO: debian-buster
+    - DISTRO: debian-stretch
+    - DISTRO: debian-jessie
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get upgrade -y
+
+install:
+  - pip3 install molecule docker ansible-lint flake8 testinfra
+
+before_script:
+  - cd ../
+  - mv ansible-role-$ROLE_NAME anton-sidelnikov.$ROLE_NAME
+  - cd anton-sidelnikov.$ROLE_NAME
+
+script:
+  - molecule test
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/?branch=master

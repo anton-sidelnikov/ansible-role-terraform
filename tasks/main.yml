@@ -1,0 +1,19 @@
+---
+# tasks file for terraform
+- name: Get latest terraform version if not set from github releases
+  command: curl https://github.com/hashicorp/terraform/releases/latest
+  register: version
+  when: terraform_version is undefined
+
+- name: Extract version from output
+  set_fact:
+    terraform_version: "{{ version.stdout_lines[0] | regex_findall('.*v(.+[0-9])') | first }}"
+  when: terraform_version is undefined
+
+- name: Import install_debian.yml if OS family is Debian
+  import_tasks: install_debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Import install_el.yml if OS family is EL
+  import_tasks: install_el.yml
+  when: ansible_os_family == "RedHat"

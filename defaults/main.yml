@@ -1,0 +1,8 @@
+---
+# defaults file for terraform
+
+terraform_app: terraform
+terraform_osarch: linux_amd64
+terraform_dl_url: https://releases.hashicorp.com
+terraform_dl_loc: /tmp
+terraform_bin_path: /usr/local/bin
